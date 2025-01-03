@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/MarkerCluster.css">
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/filter.css">
+        <link rel="stylesheet" href="css/nouislider.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>FSS SIG</title>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="js/tailDT.js"></script>
+        <script src="js/nouislider.min.js"></script>
+        <script src="js/wNumb.js"></script>
+<!-- mapa de calor -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+<!-- graficas -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<!-- capas -->
+        <script src="data/MunicipiosPriorizados_3.js"></script>
+        <script src="data/RegionesClimticas_4.js"></script>
+        <script src="data/RegionesAdministrativas_5.js"></script>
+        <script src="data/Departamentos_6.js"></script>
+        <script src="data/Municipios_7.js"></script>
+        <script src="data/Proyectos_8.js"></script>
+        <script src="data/MapadeClusters_9.js"></script>
+        <script src="data/MapadeCalor_10.js"></script>
+        <script type="module">
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        })//.fitBounds([[13.636620910750516,-93.56741729952152],[17.919561318849787,-86.89435256415358]]);
+        
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        };
+
+// s
+        import * as secret from './js/layer-s.js';
+
+        secret.logMessage();
+        secret.displaySecretDiv();
+        secret.setupKeyboardInteraction();
+
+// popups
+        import { pop_MunicipiosPriorizados_3, pop_RegionesClimticas_4, pop_RegionesAdministrativas_5, pop_Departamentos_6, pop_Municipios_7, pop_Proyectos_8, pop_MapadeClusters_9 } from './js/layer-popup.js';
+
+// estilos
+        import { style_MunicipiosPriorizados_3_0, style_RegionesClimticas_4_0, style_RegionesAdministrativas_5_0, style_Departamentos_6_0, style_Municipios_7_0, style_Proyectos_8_0, style_MapadeClusters_9_0 } from './js/layer-style.js';
+// mapas
+        import { addESRIGraylightLayer, layer_ESRIGraylight_0,
+        addGoogleSatelliteLayer, layer_GoogleSatellite_1,
+        addOpenStreetMapLayer, layer_OpenStreetMap_2,
+        addMunicipiosPriorizadosLayer, layer_MunicipiosPriorizados_3,
+        addRegionesClimticasLayer, layer_RegionesClimticas_4,
+        addRegionesAdministrativasLayer, layer_RegionesAdministrativas_5,
+        addDepartamentosLayer, layer_Departamentos_6,
+        addMunicipiosLayer, layer_Municipios_7,
+        addProyectosLayer,  layer_Proyectos_8,
+        addClusterLayer, cluster_MapadeClusters_9,
+        addMapadeCalorLayer, heatLayer, updateHeatMap, updateClusterLayer } from './js/layer-pane.js';
+
+// mapa base
+        addESRIGraylightLayer(map); // gris claro
+        addGoogleSatelliteLayer(map); // google
+        addOpenStreetMapLayer(map); // Open Street Maps
+
+// capa Municipios Priorizados
+        addMunicipiosPriorizadosLayer(map, bounds_group, json_MunicipiosPriorizados_3, pop_MunicipiosPriorizados_3, style_MunicipiosPriorizados_3_0);                
+// capa Regiones Climaticas
+        addRegionesClimticasLayer(map, bounds_group, json_RegionesClimticas_4, pop_RegionesClimticas_4, style_RegionesClimticas_4_0);
+// capa Regiones Administrativas
+        addRegionesAdministrativasLayer(map, bounds_group, json_RegionesAdministrativas_5, pop_RegionesAdministrativas_5, style_RegionesAdministrativas_5_0);
+// capa Departamentos
+        addDepartamentosLayer(map, bounds_group, json_Departamentos_6, pop_Departamentos_6, style_Departamentos_6_0);
+// capa Municipios
+        addMunicipiosLayer(map, bounds_group, json_Municipios_7, pop_Municipios_7, style_Municipios_7_0);
+// capa Proyectos
+        addProyectosLayer(map, bounds_group, json_Proyectos_8, pop_Proyectos_8, style_Proyectos_8_0);
+// capa Cluster
+        addClusterLayer(map, bounds_group, json_MapadeClusters_9, pop_MapadeClusters_9, style_MapadeClusters_9_0)
+// Mapa de calor
+        addMapadeCalorLayer(map, bounds_group, json_Proyectos_8);
+
+
+// titulo
+        var title = new L.Control({'position':'topright'});
+        title.onAdd = function (map) {
+            this._div = L.DomUtil.create('div', 'info');
+            this.update();
+            return this._div;
+        };
+        title.update = function () {
+            this._div.innerHTML = '<h2>Proyectos FSS</h2>';
+        };
+        title.addTo(map);
+// botón zoom
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+// botón geolocalizar
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+// botón medir
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'metros',
+            secondaryLengthUnit: 'kilometros',
+            primaryAreaUnit: 'metros cuadrados',
+            secondaryAreaUnit: 'hectáreas'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].className += ' fas fa-ruler';
+ // botón home
+        var homeView = {
+            //15.67564925954563, -90.23648952144113
+            //15.916/-90.000
+            lat: 15.816, // Latitud del punto central
+            lng: -90.094, // Longitud del punto central
+            zoom: 8 // Nivel de zoom inicial
+        };
+
+        function goToHome() {
+            map.setView([homeView.lat, homeView.lng], homeView.zoom);
+        }
+
+        var homeButton = L.control({ position: 'topleft' }); // Puedes cambiar la posición
+        homeButton.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+            div.innerHTML = '<img src="images/home.png" />'; // Puedes usar un emoji, texto o una imagen
+            div.style.backgroundColor = 'white';
+            div.style.width = '30px';
+            div.style.height = '30px';
+            div.style.textAlign = 'center';
+            div.style.lineHeight = '30px';
+            div.style.cursor = 'pointer';
+
+            div.onclick = function () {
+                goToHome(); // Llamar a la función al hacer clic
+            };
+            return div;
+        };
+        homeButton.addTo(map);
+
+// botón Buscador general        
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+// panel de leyenda
+        var overlaysTree = [
+            {label: '<h3>Información:</h3>'},
+            {label: '<img src="legend/heatmap.png" /> Mapa de Calor', layer: heatLayer, radioGroup: 'inf' },
+            {label: '<img src="legend/cluster.png" /> Mapa de Clusters', layer: cluster_MapadeClusters_9, radioGroup: 'inf' },
+            {label: 'Proyectos<br /><table><tr><td style="text-align: center;"><img src="legend/Proyectos_8_Bajo0.png" /></td><td>Bajo</td></tr><tr><td style="text-align: center;"><img src="legend/Proyectos_8_Medio1.png" /></td><td>Medio</td></tr><tr><td style="text-align: center;"><img src="legend/Proyectos_8_Alto2.png" /></td><td>Alto</td></tr></table>', layer: layer_Proyectos_8, radioGroup: 'inf'},
+            
+            {label: '<h3>Guatemala:</h3>'},
+            {label: 'Municipios', layer: layer_Municipios_7,  radioGroup: 'gtm'},
+            {label: 'Municipios Priorizados', layer: layer_MunicipiosPriorizados_3,  radioGroup: 'gtm' },            
+            {label: 'Departamentos', layer: layer_Departamentos_6,  radioGroup: 'gtm'},
+            {label: 'Regiones Administrativas', layer: layer_RegionesAdministrativas_5,  radioGroup: 'gtm'},
+            {label: 'Regiones Climáticas', layer: layer_RegionesClimticas_4,  radioGroup: 'gtm' },
+            
+            {label: '<h3>Mapa Base:</h3>'},
+            {label: "OpenStreetMap", layer: layer_OpenStreetMap_2, radioGroup: 'bm' },
+            {label: "Google Satelite", layer: layer_GoogleSatellite_1, radioGroup: 'bm' },
+            {label: "ESRI Gris Claro", layer: layer_ESRIGraylight_0, radioGroup: 'bm' }]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            collapsed: false, 
+        });
+        lay.addTo(map);
+		document.addEventListener("DOMContentLoaded", function() {
+            // set new Layers List height which considers toggle icon
+            function newLayersListHeight() {
+                var layerScrollbarElement = document.querySelector('.leaflet-control-layers-scrollbar');
+                if (layerScrollbarElement) {
+                    var layersListElement = document.querySelector('.leaflet-control-layers-list');
+                    var originalHeight = layersListElement.style.height 
+                        || window.getComputedStyle(layersListElement).height;
+                    var newHeight = parseFloat(originalHeight) - 50;
+                    layersListElement.style.height = newHeight + 'px';
+                }
+            }
+            var isLayersListExpanded = true;
+            var controlLayersElement = document.querySelector('.leaflet-control-layers');
+            var toggleLayerControl = document.querySelector('.leaflet-control-layers-toggle');
+            // toggle Collapsed/Expanded and apply new Layers List height
+            toggleLayerControl.addEventListener('click', function() {
+                if (isLayersListExpanded) {
+                    controlLayersElement.classList.remove('leaflet-control-layers-expanded');
+                } else {
+                    controlLayersElement.classList.add('leaflet-control-layers-expanded');
+                }
+                isLayersListExpanded = !isLayersListExpanded;
+                newLayersListHeight()
+            });	
+			// apply new Layers List height if toggle layerstree
+			if (controlLayersElement) {
+				controlLayersElement.addEventListener('click', function(event) {
+					var toggleLayerHeaderPointer = event.target.closest('.leaflet-layerstree-header-pointer span');
+					if (toggleLayerHeaderPointer) {
+						newLayersListHeight();
+					}
+				});
+			}
+            // Collapsed/Expanded at Start to apply new height
+            setTimeout(function() {
+                toggleLayerControl.click();
+            }, 10);
+            setTimeout(function() {
+                toggleLayerControl.click();
+            }, 10);
+            // Collapsed touch/small screen
+            var isSmallScreen = window.innerWidth < 650;
+            if (isSmallScreen) {
+                setTimeout(function() {
+                    controlLayersElement.classList.remove('leaflet-control-layers-expanded');
+                    isLayersListExpanded = !isLayersListExpanded;
+                }, 500);
+            }  
+        });       
+        setBounds();
+
+// botón buscar en la capa
+        map.addControl(new L.Control.Search({
+            layer: layer_Proyectos_8,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'NOMBRE_DE_'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+
+
+         
+// Crear la estructura principal del contenedor del mapa
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className = "row";
+        row.id = "all";
+        row.style.height = "100vh"; // Ocupa toda la altura de la pantalla
+        row.style.display = "grid";
+        row.style.gridTemplateRows = "1fr auto"; // Mapa arriba, tabla abajo
+        row.style.gridTemplateColumns = "350px 1fr 350px"; // Panel izquierdo, mapa, panel derecho
+        row.style.gridTemplateAreas = `
+            "leftPanel map rightPanel"
+            "leftPanel dataPanel rightPanel"
+        `;
+
+// Panel de gráficas (izquierdo)
+        var col0 = document.createElement('div');
+        col0.id = "leftPanel";
+        col0.style.gridArea = "leftPanel";
+        col0.style.backgroundColor = "#f4f4f4";
+        col0.style.overflowY = "auto";
+        col0.style.display = "block";
+        col0.innerHTML = "<h3>Panel de Gráficas</h3>"; // Contenido de prueba
+
+// Ventana del mapa (centro)
+        var col1 = document.createElement('div');
+        col1.id = "mapWindow";
+        col1.style.gridArea = "map";
+        col1.style.position = "relative";
+
+// Panel del menú (derecho)
+        var col2 = document.createElement('div');
+        col2.id = "rightPanel";
+        col2.style.gridArea = "rightPanel";
+        col2.style.backgroundColor = "#f4f4f4";
+        col2.style.overflowY = "auto";
+        col2.style.display = "block";
+        col2.innerHTML = "<h3>Panel de Filtros</h3>"; // Contenido de prueba
+
+// Panel de la tabla de datos (inferior)
+        var col3 = document.createElement('div');
+        col3.id = "dataPanel";
+        col3.style.gridArea = "dataPanel";
+        col3.style.backgroundColor = "white";
+        //col3.style.margin = "auto"; // Centrar si es necesario
+        //col3.style.padding = "10px"; // Espaciado interno
+        //col3.style.position = 'fixed';
+        col3.style.left = '50%';
+        col3.style.transform = 'translateX(-50%)';
+        col3.style.maxWidth = '1100px'; // Máximo ancho del panel
+        col3.style.maxHeight = '300px'; // Máximo alto del panel
+        col3.style.borderTop = "1px solid #ccc";
+        col3.style.overflowY = "auto";
+        col3.style.display = "block";
+
+// Insertar el contenedor principal y los paneles
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        row.appendChild(col0);
+        row.appendChild(col1);
+        row.appendChild(col2);
+        row.appendChild(col3);
+        col1.appendChild(mapDiv);
+
+
+// Función principal para filtrar datos y actualizar gráficas
+        function filterFunc() {
+            // Verificar si la capa 'layer_Proyectos_8' está definida
+        /* if (!map.hasLayer(layer_Proyectos_8)) {
+                console.warn("La capa 'layer_Proyectos_8' no está activa en el mapa.");
+                return;
+            }*/
+
+            // Obtener las características originales de la capa
+            let features = json_Proyectos_8.features.slice(0); // Clonar las características de la capa
+
+            // Aplicar filtros
+            for (const key in Filters) {
+                const keyS = key.replace(/[^a-zA-Z0-9_]/g, ""); // Normalizar el nombre del filtro
+                const selectElement = document.getElementById("sel_" + keyS); // Obtener el elemento select
+
+                // Validar existencia del elemento select
+                if (!selectElement) {
+                    console.warn(`Elemento select 'sel_${keyS}' no encontrado.`);
+                    continue; // Saltar al siguiente filtro
+                }
+
+                // Obtener valores seleccionados
+                const selection = Array.from(selectElement.options)
+                    .filter((option) => option.selected)
+                    .map((option) => option.value);
+
+                // Filtrar características
+                features = features.filter((feature) => {
+                    if (!feature || !feature.properties) {
+                        console.warn(
+                            `Una característica no tiene propiedades en la capa 'layer_Proyectos_8'.`
+                        );
+                        return false; // Ignorar características sin propiedades
+                    }
+                    // Si no hay selección o la propiedad coincide, conservar la característica
+                    return (
+                        selection.length === 0 ||
+                        selection.includes(feature.properties[key])
+                    );
+                });
+            }
+
+            // Actualizar la capa filtrada
+            layer_Proyectos_8.clearLayers();
+            layer_Proyectos_8.addData(features);
+
+            const filteredLayer = L.geoJSON(features);
+            
+            // (Opcional) Actualizar gráficas, tablas o mapas de calor si es necesario
+            updateTableWithFilters(features); // Actualiza la tabla con los datos filtrados
+            actualizarGraficaConFiltros(features); // Actualiza las gráficas
+            updateHeatMap(layer_Proyectos_8); // Actualiza el mapa de calor
+            updateBarChart(features);
+            updateClusterLayer(filteredLayer, map, style_MapadeClusters_9_0);
+            
+
+
+
+            /*    // Eliminar y actualizar clústeres
+            if (map.hasLayer(cluster_MapadeClusters_9)) {
+                map.removeLayer(cluster_MapadeClusters_9);
+            }
+            updateClusterLayer(filteredLayer, map, style_MapadeClusters_9_0);*/
+        }
+
+        // Inicializar ambas gráficas con los datos originales al cargar la página
+        map.on('load', function() {
+                    map.eachLayer(function(lyr) {
+                        if ("options" in lyr && "dataVar" in lyr["options"] && lyr["options"]["dataVar"] === "layer_ProyectosFSS_ajustadosPonderados_4") {
+                            const features = this[lyr["options"]["dataVar"]].features;
+                            actualizarGraficaConFiltros(features);
+                            updateBarChart(features);
+                        }
+                    });
+                });
+
+
+// filtros        
+        var Filters = {"clasificac": "str","tipo": "str","DEPARTAMEN": "str","MUNICIPIO": "str"};
+        
+        import { createClasificacionFilter, createTipoFilter, createDepartamentoFilter, createMunicipioFilter } from './js./layer-filter.js';
+
+        createClasificacionFilter(filterFunc);
+        createTipoFilter(filterFunc);
+        createDepartamentoFilter(filterFunc);
+        createMunicipioFilter(filterFunc);
+
+// Limpiar todos
+            // Crear un contenedor para el botón global de limpiar
+            var clearAllContainer = document.createElement('div');
+            clearAllContainer.id = "clearAllContainer";
+            clearAllContainer.style.marginTop = "20px"; // Separación con los filtros
+            clearAllContainer.style.textAlign = "center"; // Centrar el botón
+            document.getElementById("rightPanel").appendChild(clearAllContainer);
+
+            // Crear el botón
+            var clearAllButton = document.createElement('button');
+            clearAllButton.innerHTML = "Limpiar todo";
+            clearAllButton.className = "reset-all-button"; // Puedes usar la clase de estilos previamente definida
+            clearAllButton.onclick = function() {
+                // Obtener todos los selects de filtros
+                var selects = document.querySelectorAll('.filterselect select');
+                selects.forEach(function(select) {
+                    for (var i = 0; i < select.options.length; i++) {
+                        select.options[i].selected = false; // Deseleccionar todas las opciones
+                    }
+                });
+                filterFunc(); // Aplicar los cambios a través de la función de filtro
+            };
+            clearAllContainer.appendChild(clearAllButton);
+
+// graficas
+
+// Crear el panel izquierdo para las gráficas
+        var canvas = document.createElement('canvas');
+        canvas.id = "filteredChart";
+        canvas.style.height = "20%";
+        //canvas.style.width = "80%";
+        //canvas.style.margin = "20px auto"; 
+        col0.appendChild(canvas);
+        
+// Crear el contenedor para la gráfica de barras
+        var barChartContainer = document.createElement("div");
+        barChartContainer.id = "barChartContainer";
+        barChartContainer.style.height = "50%";
+        barChartContainer.style.width = "80%"; // Ancho relativo al contenedor padre
+        barChartContainer.style.marginTop = "20px";
+        barChartContainer.style.margin = "20px auto"; // Centrado horizontal con margen superior de 20px
+        document.getElementById("leftPanel").appendChild(barChartContainer);
+
+        var barChartCanvas = document.createElement("canvas");
+        barChartCanvas.id = "barChartCanvas";
+        barChartContainer.appendChild(barChartCanvas);
+
+// Instancias de gráficas
+        let pieChart;
+        let barChartInstance;
+
+        import { initChartsPanel, actualizarGraficaConFiltros, updateBarChart } from './js./layer-graficas.js';
+
+// panel pop up
+
+// Crear el panel
+        var panelPopUp = L.control({ position: 'bottomleft' });
+        panelPopUp.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom panel-popup');
+            div.id = 'panelPopUp';
+            div.style.backgroundColor = 'white';
+            div.style.padding = '20px';
+            div.style.width = '350px'; // Ocupa todo el ancho inferior
+            div.style.maxHeight = '400px';
+            div.style.boxShadow = '0 -2px 10px rgba(0, 0, 0, 0.5)';
+            div.style.borderRadius = '5px 5px 0 0';
+            div.style.overflowY = 'auto';
+            div.style.position = 'fixed';
+            div.style.bottom = '-500px'; // Oculto inicialmente
+            div.style.left = '50%';
+            div.style.transform = 'translateX(-50%)';
+            div.style.transition = 'bottom 0.3s ease-in-out'; // Animación de entrada/salida
+            div.style.cursor = 'default';
+            return div;
+        };
+        panelPopUp.addTo(map);
+
+// panel data table
+
+        // Panel de datos
+        var dataPanel = L.control({ position: 'bottomleft' });
+        dataPanel.onAdd = function (map) {
+            // Obtener el panel existente
+            var div = document.getElementById('dataPanel');
+            div.style.display = 'block'; // Hacerlo visible si está oculto
+            div.innerHTML = ''; // Limpiar contenido previo
+
+            // Estilo del panel
+            div.style.backgroundColor = 'white';
+            div.style.padding = '10px';
+            div.style.width = '100%'; // Ocupa el espacio asignado
+            div.style.height = '100%'; // Ajusta al tamaño disponible
+            div.style.overflowY = 'auto';
+
+            // Contenedor para la tabla
+            var tableContainer = document.createElement('div');
+            var table = document.createElement('table');
+            Object.assign(table.style, {
+                width: '100%',
+                borderCollapse: 'collapse',
+                fontSize: '14px'
+            });
+
+            // Encabezados de la tabla
+            var headerRow = document.createElement('tr');
+            var headers = ['Departamento', 'Municipio', 'Tipo', 'Clasificación', 'Nombre del Proyecto'];
+            headers.forEach(function (header) {
+                var th = document.createElement('th');
+                th.innerHTML = header;
+
+                Object.assign(th.style, {
+                    position: 'sticky',
+                    top: '0', // Fijar en la parte superior
+                    zIndex: '1', // Asegura que se muestre sobre el contenido
+                    borderBottom: '1px solid #ddd',
+                    padding: '5px',
+                    textAlign: 'left',
+                    backgroundColor: '#f4f4f4'
+                });
+                headerRow.appendChild(th);
+            });
+            var thead = document.createElement('thead');
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Cuerpo de la tabla
+            var tableBody = document.createElement('tbody');
+            table.appendChild(tableBody);
+            tableContainer.appendChild(table);
+            div.appendChild(tableContainer);
+
+            // Contador de elementos mostrados
+            var counter = document.createElement('div');
+            Object.assign(counter.style, {
+                marginTop: '10px',
+                textAlign: 'center',
+                fontSize: '14px'
+            });
+            div.appendChild(counter);
+
+            // Paginación
+            var pagination = document.createElement('div');
+            Object.assign(pagination.style, {
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '10px',
+                marginTop: '10px'
+            });
+
+            var prevButton = document.createElement('button');
+            prevButton.innerText = 'Anterior';
+            prevButton.style.cursor = 'pointer';
+            prevButton.disabled = true;
+            pagination.appendChild(prevButton);
+
+            var nextButton = document.createElement('button');
+            nextButton.innerText = 'Siguiente';
+            nextButton.style.cursor = 'pointer';
+            nextButton.disabled = true;
+            pagination.appendChild(nextButton);
+
+            div.appendChild(pagination);
+
+            // Función de actualización de la tabla
+            div.updateTable = function (features) {
+                tableBody.innerHTML = ''; // Limpiar datos previos
+
+                // Filtrar características válidas
+                var validFeatures = features.filter(feature => {
+                    return [
+                        feature.properties['DEPARTAMEN'],
+                        feature.properties['MUNICIPIO'],
+                        feature.properties['tipo'],
+                        feature.properties['clasificac'],
+                        feature.properties['NOMBRE_DE_']
+                    ].some(value => value && value !== 'N/A');
+                });
+
+                var rowsPerPage = 10;
+                var currentPage = 0;
+                var totalItems = validFeatures.length;
+
+                function renderPage(page) {
+                    tableBody.innerHTML = '';
+                    var start = page * rowsPerPage;
+                    var end = Math.min(start + rowsPerPage, totalItems);
+                    var displayedItems = validFeatures.slice(start, end);
+
+                    displayedItems.forEach(function (feature) {
+                        var row = document.createElement('tr');
+                        var values = [
+                            feature.properties['DEPARTAMEN'] || 'N/A',
+                            feature.properties['MUNICIPIO'] || 'N/A',
+                            feature.properties['tipo'] || 'N/A',
+                            feature.properties['clasificac'] || 'N/A',
+                            feature.properties['NOMBRE_DE_'] || 'N/A'
+                        ];
+
+                        values.forEach(function (value) {
+                            var td = document.createElement('td');
+                            td.innerHTML = value;
+                            Object.assign(td.style, {
+                                borderBottom: '1px solid #ddd',
+                                padding: '5px'
+                            });
+                            row.appendChild(td);
+                        });
+
+                        tableBody.appendChild(row);
+                    });
+
+                    // Actualizar contador
+                    counter.innerHTML = `Mostrando ${start + 1} a ${end} de ${totalItems} elementos`;
+                    prevButton.disabled = currentPage === 0;
+                    nextButton.disabled = currentPage === Math.floor((totalItems - 1) / rowsPerPage);
+                }
+
+                prevButton.onclick = function () {
+                    if (currentPage > 0) {
+                        currentPage--;
+                        renderPage(currentPage);
+                    }
+                };
+
+                nextButton.onclick = function () {
+                    if (currentPage < Math.floor((totalItems - 1) / rowsPerPage)) {
+                        currentPage++;
+                        renderPage(currentPage);
+                    }
+                };
+
+                renderPage(0);
+            };
+
+            return div;
+        };
+        dataPanel.addTo(map);
+
+        // Función para actualizar la tabla al aplicar filtros o limpiar selección
+        function updateTableWithFilters() {
+            var filteredFeatures = [];
+            // Recopilar las características de todas las capas que tienen datos de GeoJSON
+            map.eachLayer(function (layer) {
+                if (layer.feature) {
+                    filteredFeatures.push(layer.feature);
+                }
+            });
+
+            // Asegurarse de que el panel está definido y tiene el método updateTable
+            if (dataPanel && typeof dataPanel.getContainer().updateTable === 'function') {
+                dataPanel.getContainer().updateTable(filteredFeatures);
+            } else {
+                console.error('El dataPanel o su método updateTable no están disponibles.');
+            }
+        }
+
+
+        // Añadir evento de actualización al aplicar filtros
+        var filters = document.querySelectorAll('[id^="sel_"]');
+        filters.forEach(filter => {
+            filter.addEventListener('change', updateTableWithFilters);
+        });
+
+        // Añadir evento de actualización al limpiar filtros
+        var resetButtons = document.querySelectorAll('.filter-reset-button');
+        resetButtons.forEach(button => {
+            button.addEventListener('click', updateTableWithFilters);
+        });
+
+        // Función para mostrar el panel con datos filtrados
+        function showDataPanel(features) {
+            var panel = document.querySelector('.data-panel');
+            panel.style.display = 'block';
+            panel.updateTable(features);
+        }; // revisar
+
+
+// Crear botones para controlar la visibilidad de los paneles
+var toggleContainer = document.createElement("div");
+toggleContainer.id = "toggleContainer";
+toggleContainer.style.position = "absolute";
+toggleContainer.style.top = "10px";
+toggleContainer.style.right = "10px";
+toggleContainer.style.backgroundColor = "white";
+toggleContainer.style.padding = "10px";
+toggleContainer.style.boxShadow = "0 2px 5px rgba(0,0,0,0.3)";
+toggleContainer.style.zIndex = "1000";
+/*
+// Botón para el panel izquierdo
+var toggleLeftButton = document.createElement("button");
+toggleLeftButton.innerHTML = "Panel Gráficas";
+toggleLeftButton.onclick = function () {
+    togglePanel("leftPanel");
+};
+toggleContainer.appendChild(toggleLeftButton);
+
+// Botón para el panel derecho
+var toggleRightButton = document.createElement("button");
+toggleRightButton.innerHTML = "Panel Filtros";
+toggleRightButton.onclick = function () {
+    togglePanel("rightPanel");
+};
+toggleContainer.appendChild(toggleRightButton);
+*/
+// Botón para el panel de datos
+var toggleDataButton = document.createElement("button");
+toggleDataButton.innerHTML = "Panel Datos";
+toggleDataButton.onclick = function () {
+    togglePanel("dataPanel");
+};
+toggleContainer.appendChild(toggleDataButton);
+
+// Añadir los botones al mapa
+document.body.appendChild(toggleContainer);
+
+function togglePanel(panelId) {
+    var panel = document.getElementById(panelId);
+    if (panel.style.display === "none") {
+        panel.style.display = "block";
+    } else {
+        panel.style.display = "none";
+    }
+}
+
+
+
+        // Inicializar mapa de calor y gráficas al cargar
+        updateHeatMap(layer_Proyectos_8);
+        actualizarGraficaConFiltros(layer_Proyectos_8.toGeoJSON().features);
+        updateBarChart(layer_Proyectos_8.toGeoJSON().features);
+
+        </script>
+        <script type="module" src="js/layer-style.js"></script>
+        <script type="module" src="js/layer-popup.js"></script>
+        <script type="module" src="js/layer-s.js"></script>
+        <script type="module" src="js/layer-pane.js"></script>
+        <script type="module" src="js/layer-filter.js"></script>
+        <script type="module" src="js/layer-graficas.js"></script>
+    </body>
+</html>
