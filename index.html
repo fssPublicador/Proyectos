@@ -216,7 +216,9 @@
             {label: '<h3>Mapa Base:</h3>'},
             {label: "OpenStreetMap", layer: layer_OpenStreetMap_2, radioGroup: 'bm' },
             {label: "Google Satelite", layer: layer_GoogleSatellite_1, radioGroup: 'bm' },
-            {label: "ESRI Gris Claro", layer: layer_ESRIGraylight_0, radioGroup: 'bm' }]
+            {label: "ESRI Gris Claro", layer: layer_ESRIGraylight_0, radioGroup: 'bm' },
+		{label: '<i>-Ninguno-</i>', layer: emptyLayer, radioGroup: 'bm'} // Apaga las capas de mapa base
+	]
         var lay = L.control.layers.tree(null, overlaysTree,{
             collapsed: false, 
         });
