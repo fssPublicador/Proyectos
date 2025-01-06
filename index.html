@@ -75,17 +75,17 @@
         };
 
 // s
-        import * as secret from '/Proyectos/js/layer-s.js';
+        import * as secret from './js/layer-s.js';
 
         secret.logMessage();
         secret.displaySecretDiv();
         secret.setupKeyboardInteraction();
 
 // popups
-        import { pop_MunicipiosPriorizados_3, pop_RegionesClimticas_4, pop_RegionesAdministrativas_5, pop_Departamentos_6, pop_Municipios_7, pop_Proyectos_8, pop_MapadeClusters_9 } from '/Proyectos/js/layer-popup.js';
+        import { pop_MunicipiosPriorizados_3, pop_RegionesClimticas_4, pop_RegionesAdministrativas_5, pop_Departamentos_6, pop_Municipios_7, pop_Proyectos_8, pop_MapadeClusters_9 } from './js/layer-popup.js';
 
 // estilos
-        import { style_MunicipiosPriorizados_3_0, style_RegionesClimticas_4_0, style_RegionesAdministrativas_5_0, style_Departamentos_6_0, style_Municipios_7_0, style_Proyectos_8_0, style_MapadeClusters_9_0 } from '/Proyectos/js/layer-style.js';
+        import { style_MunicipiosPriorizados_3_0, style_RegionesClimticas_4_0, style_RegionesAdministrativas_5_0, style_Departamentos_6_0, style_Municipios_7_0, style_Proyectos_8_0, style_MapadeClusters_9_0 } from './js/layer-style.js';
 // mapas
         import { addESRIGraylightLayer, layer_ESRIGraylight_0,
         addGoogleSatelliteLayer, layer_GoogleSatellite_1,
@@ -97,7 +97,7 @@
         addMunicipiosLayer, layer_Municipios_7,
         addProyectosLayer,  layer_Proyectos_8,
         addClusterLayer, cluster_MapadeClusters_9,
-        addMapadeCalorLayer, heatLayer, updateHeatMap, updateClusterLayer } from '/Proyectos/js/layer-pane.js';
+        addMapadeCalorLayer, heatLayer, updateHeatMap, updateClusterLayer } from './js/layer-pane.js';
 
 // mapa base
         addESRIGraylightLayer(map); // gris claro
@@ -154,8 +154,9 @@
         var homeView = {
             //15.67564925954563, -90.23648952144113
             //15.916/-90.000
-            lat: 15.816, // Latitud del punto central
-            lng: -90.094, // Longitud del punto central
+		//15.663/-88.187
+            lat: 15.663, // Latitud del punto central
+            lng: -88.187, // Longitud del punto central
             zoom: 8 // Nivel de zoom inicial
         };
 
@@ -421,7 +422,7 @@
 // filtros        
         var Filters = {"clasificac": "str","tipo": "str","DEPARTAMEN": "str","MUNICIPIO": "str"};
         
-        import { createClasificacionFilter, createTipoFilter, createDepartamentoFilter, createMunicipioFilter } from '/Proyectos/js/layer-filter.js';
+        import { createClasificacionFilter, createTipoFilter, createDepartamentoFilter, createMunicipioFilter } from './js/layer-filter.js';
 
         createClasificacionFilter(filterFunc);
         createTipoFilter(filterFunc);
@@ -479,7 +480,7 @@
         let pieChart;
         let barChartInstance;
 
-        import { initChartsPanel, actualizarGraficaConFiltros, updateBarChart } from '/Proyectos/js/layer-graficas.js';
+        import { initChartsPanel, actualizarGraficaConFiltros, updateBarChart } from './js/layer-graficas.js';
 
 // panel pop up
 
@@ -760,11 +761,11 @@ function togglePanel(panelId) {
         updateBarChart(layer_Proyectos_8.toGeoJSON().features);
 
         </script>
-	<script type="module" src="/Proyectos/js/layer-style.js"></script>
-	<script type="module" src="/Proyectos/js/layer-popup.js"></script>
-	<script type="module" src="/Proyectos/js/layer-s.js"></script>
-	<script type="module" src="/Proyectos/js/layer-pane.js"></script>
-	<script type="module" src="/Proyectos/js/layer-filter.js"></script>
-	<script type="module" src="/Proyectos/js/layer-graficas.js"></script>
+	<script type="module" src="./js/layer-style.js"></script>
+	<script type="module" src="./js/layer-popup.js"></script>
+	<script type="module" src="./js/layer-s.js"></script>
+	<script type="module" src="./js/layer-pane.js"></script>
+	<script type="module" src="./js/layer-filter.js"></script>
+	<script type="module" src="./js/layer-graficas.js"></script>
     </body>
 </html>
