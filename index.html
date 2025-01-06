@@ -193,6 +193,11 @@
         .className += ' fa fa-search';
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
         .title += 'Search for a place';
+
+// Variable con capa vacia        
+        var emptyLayer = L.layerGroup();
+		
+		
 // panel de leyenda
         var overlaysTree = [
             {label: '<h3>Información:</h3>'},
@@ -206,7 +211,8 @@
             {label: 'Departamentos', layer: layer_Departamentos_6,  radioGroup: 'gtm'},
             {label: 'Regiones Administrativas', layer: layer_RegionesAdministrativas_5,  radioGroup: 'gtm'},
             {label: 'Regiones Climáticas', layer: layer_RegionesClimticas_4,  radioGroup: 'gtm' },
-            
+		{label: '<i>-Ninguno-</i>', layer: emptyLayer, radioGroup: 'gtm'}, // Ninguno como botón de radio
+
             {label: '<h3>Mapa Base:</h3>'},
             {label: "OpenStreetMap", layer: layer_OpenStreetMap_2, radioGroup: 'bm' },
             {label: "Google Satelite", layer: layer_GoogleSatellite_1, radioGroup: 'bm' },
